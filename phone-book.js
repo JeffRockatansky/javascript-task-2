@@ -37,6 +37,13 @@ function validEmail(email) {
     }
 }
 
+function formatPhone(phone) {
+    let formattedPhone = '';
+    // eslint-disable-next-line max-len
+    formattedPhone = formattedPhone.concat('+7', ' (', phone.substring(0, 3), ') ', phone.substring(3, 6), '-', phone.substring(6, 8), '-', phone.substring(8, 10));
+    return formattedPhone;
+}
+
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
@@ -63,7 +70,13 @@ exports.add = function (phone, name, email) {
  * @param {String} email
  */
 exports.update = function (phone, name, email) {
+    if (phone in phoneBook && validName(name) && validEmail(email)) {
+        phoneBook[phone] = { name, email };
 
+        return true;
+    }
+
+    return false;
 
     // updates phone's name and email
     // email can be empty - validate
@@ -75,7 +88,9 @@ exports.update = function (phone, name, email) {
  * @param {String} query
  */
 exports.findAndRemove = function (query) {
-
+    let counter = 0;
+    
+    return counter;
     /* 
     На вход принимает запрос в виде строки
     Находит (смотри __find__) и удаляет все найденные записи

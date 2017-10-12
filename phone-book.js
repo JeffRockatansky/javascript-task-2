@@ -11,19 +11,30 @@ exports.isStar = true;
  */
 var phoneBook = {};
 
-function validNumber(number) {
-    let regulars = new RegExp('^[\d]{10}$');
-    let numberIsValid = regulars.test(number);
+function validPhone(phone) {
+    let regular = new RegExp('^\\d{10}$');
+    let phoneIsValid = regular.test(phone);
 
-    return numberIsValid;
+    return phoneIsValid;
+}
+
+function validName(name) {
+    if (typeof name === 'string' && name !== '') {
+        return true;
+    }
+
+    return false;
 }
 
 function validEmail(email) {
-    let regStr = '^((\\w+)((\\.\\w+)+)|\\w+)@((\\w+)((\\.\\w+)+)|\\w+)$';
-    let regular = new RegExp(regStr);
-    let emailIsValid = regular.test(email);
-
-    return emailIsValid;
+    if (email === '' || email == null) {
+        return true;
+    } else {
+        let regular = new RegExp('^((\\w+)((\\.\\w+)+)|\\w+)@((\\w+)((\\.\\w+)+)|\\w+)$');
+        let emailIsValid = regular.test(email);
+    
+        return emailIsValid;
+    }
 }
 
 /**
@@ -33,9 +44,16 @@ function validEmail(email) {
  * @param {String} email
  */
 exports.add = function (phone, name, email) {
-    // validate number format (10 any integers) - regexp: 
-    // validate name - any string, not empty, not repeating?
-    // validate email - empty OR has valid email format - someone@example.com - regexp: 
+    if (!(phone in phoneBook) && validPhone(phone) && validName(name) && validEmail(email)) {
+        phoneBook[phone] = { name, email };
+
+        return true;
+    }
+
+    return false;
+    // validate phone format (10 any integers) 
+    // validate name - any string, not empty
+    // validate email - empty OR has valid email format - someone@example.com 
 };
 
 /**
@@ -45,6 +63,8 @@ exports.add = function (phone, name, email) {
  * @param {String} email
  */
 exports.update = function (phone, name, email) {
+
+
     // updates phone's name and email
     // email can be empty - validate
     // name can't - validate
@@ -83,7 +103,7 @@ exports.find = function (query) {
  * Импорт записей из csv-формата
  * @star
  * @param {String} csv
- * @returns {Number} – количество добавленных и обновленных записей
+ * @returns {phone} – количество добавленных и обновленных записей
  */
 exports.importFromCsv = function (csv) {
     // Парсим csv

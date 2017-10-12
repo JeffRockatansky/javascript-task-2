@@ -19,9 +19,7 @@ function validNumber(number) {
 }
 
 function validEmail(email) {
-    let rw = '[0-9A-Za-z-_]+'; // regular word \w
-    let pt = ['^((', ')((\\.', ')+)|', ')@((', ')((\\.', ')+)|', ')$']; // parts of too long regexp for eslint
-    let regStr = pt[0].concat(rw, pt[1], rw, pt[2], rw, pt[3], rw, pt[4], rw, pt[5], rw, pt[6]);
+    let regStr = '^((\\w+)((\\.\\w+)+)|\\w+)@((\\w+)((\\.\\w+)+)|\\w+)$';
     let regular = new RegExp(regStr);
     let emailIsValid = regular.test(email);
 

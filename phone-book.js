@@ -29,27 +29,29 @@ function validName(name) {
 function validEmail(email) {
     if (email === '' || email == null) {
         return true;
-    } else {
-        let regular = new RegExp('^((\\w+)((\\.\\w+)+)|\\w+)@((\\w+)((\\.\\w+)+)|\\w+)$');
-        let emailIsValid = regular.test(email);
-    
-        return emailIsValid;
     }
+    let regular = new RegExp('^((\\w+)((\\.\\w+)+)|\\w+)@((\\w+)((\\.\\w+)+)|\\w+)$');
+    let emailIsValid = regular.test(email);
+
+    return emailIsValid;
+
 }
 
 function formatPhone(phone) {
     let formattedPhone = '';
     // eslint-disable-next-line max-len
-    formattedPhone = formattedPhone.concat('+7', ' (', phone.substring(0, 3), ') ', phone.substring(3, 6), '-', phone.substring(6, 8), '-', phone.substring(8, 10));
+    formattedPhone = formattedPhone.concat('+7', ' (', phone.slice(0, 3), ') ', phone.slice(3, 6), '-', phone.slice(6, 8), '-', phone.slice(8, 10));
+
     return formattedPhone;
 }
 
 function searchEngine(query, searchSpace) {
-    let searchResult = {}; 
-    for(let key in searchSpace) {
-        // eslint-disable-next-line max-len
+    let searchResult = [];
+    let i = 0;
+    for (let key in searchSpace) {
         if (key.indexOf(query) !== -1 || searchSpace[key].email.indexOf(query) !== -1 || searchSpace[key].name.indexOf(query) !== -1) {
-            searchResult[key] = searchSpace[key];
+            searchResult[i] = key;
+            i++;
         }
     }
 
@@ -101,8 +103,15 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
     let counter = 0;
-    
+    let toDelete = searchEngine(query, phoneBook);
+    counter = toDelete.length;
+    for (let i = 0; i < counter; i++) {
+        delete phoneBook[toDelete[i]];
+    }
+    counter = toDelete.length;
+
     return counter;
+
     /* 
     На вход принимает запрос в виде строки
     Находит (смотри __find__) и удаляет все найденные записи
@@ -116,8 +125,10 @@ exports.findAndRemove = function (query) {
  */
 exports.find = function (query) {
     let searcResult = [];
+    let toResult = searchEngine(query, phoneBook);
 
-    return searcResult; 
+    return searcResult;
+
     /*
     На вход принимает запрос в виде строки
     Ищет вхождение этой строки хотя бы в одно из полей «Телефон», «Имя» и «Электронную почту»

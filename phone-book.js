@@ -44,6 +44,18 @@ function formatPhone(phone) {
     return formattedPhone;
 }
 
+function searchEngine(query, searchSpace) {
+    let searchResult = {}; 
+    for(let key in searchSpace) {
+        // eslint-disable-next-line max-len
+        if (key.indexOf(query) !== -1 || searchSpace[key].email.indexOf(query) !== -1 || searchSpace[key].name.indexOf(query) !== -1) {
+            searchResult[key] = searchSpace[key];
+        }
+    }
+
+    return searchResult;
+}
+
 /**
  * Добавление записи в телефонную книгу
  * @param {String} phone
@@ -103,7 +115,9 @@ exports.findAndRemove = function (query) {
  * @param {String} query
  */
 exports.find = function (query) {
+    let searcResult = [];
 
+    return searcResult; 
     /*
     На вход принимает запрос в виде строки
     Ищет вхождение этой строки хотя бы в одно из полей «Телефон», «Имя» и «Электронную почту»

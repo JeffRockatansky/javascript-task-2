@@ -9,7 +9,24 @@ exports.isStar = true;
 /**
  * Телефонная книга
  */
-var phoneBook;
+var phoneBook = {};
+
+function validNumber(number) {
+    let regulars = new RegExp('^[\d]{10}$');
+    let numberIsValid = regulars.test(number);
+
+    return numberIsValid;
+}
+
+function validEmail(email) {
+    let rw = '[0-9A-Za-z-_]+'; // regular word \w
+    let pt = ['^((', ')((\\.', ')+)|', ')@((', ')((\\.', ')+)|', ')$']; // parts of too long regexp for eslint
+    let regStr = pt[0].concat(rw, pt[1], rw, pt[2], rw, pt[3], rw, pt[4], rw, pt[5], rw, pt[6]);
+    let regular = new RegExp(regStr);
+    let emailIsValid = regular.test(email);
+
+    return emailIsValid;
+}
 
 /**
  * Добавление записи в телефонную книгу
@@ -18,7 +35,9 @@ var phoneBook;
  * @param {String} email
  */
 exports.add = function (phone, name, email) {
-
+    // validate number format (10 any integers) - regexp: 
+    // validate name - any string, not empty, not repeating?
+    // validate email - empty OR has valid email format - someone@example.com - regexp: 
 };
 
 /**
@@ -28,7 +47,9 @@ exports.add = function (phone, name, email) {
  * @param {String} email
  */
 exports.update = function (phone, name, email) {
-
+    // updates phone's name and email
+    // email can be empty - validate
+    // name can't - validate
 };
 
 /**
@@ -37,6 +58,11 @@ exports.update = function (phone, name, email) {
  */
 exports.findAndRemove = function (query) {
 
+    /* 
+    На вход принимает запрос в виде строки
+    Находит (смотри __find__) и удаляет все найденные записи
+    Возвращает число удаленных записей
+    */
 };
 
 /**
@@ -45,6 +71,14 @@ exports.findAndRemove = function (query) {
  */
 exports.find = function (query) {
 
+    /*
+    На вход принимает запрос в виде строки
+    Ищет вхождение этой строки хотя бы в одно из полей «Телефон», «Имя» и «Электронную почту»
+    Возвращает отсортированный по «Имени» массив строк в формате name, phone, email
+    «Имя» и «Электронную почту» выводит как есть, а «Телефон» в формате +7 (555) 666-77-88
+    Пустой запрос не должен ничего находить
+    Запрос «*» находит все записи
+    */
 };
 
 /**
